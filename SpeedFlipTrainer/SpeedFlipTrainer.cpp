@@ -145,7 +145,8 @@ void SpeedFlipTrainer::Hook()
 			}
 
 			// ball hasn't exploded or been hit yet
-			if (!attempt.exploded && !attempt.hit)
+			//if (!attempt.exploded && !attempt.hit)
+			if (!attempt.hit)
 			{
 				Measure(car, gameWrapper);
 			}
@@ -162,21 +163,21 @@ void SpeedFlipTrainer::Hook()
 			LOG("Time to ball: {0:.3f}s after {1} tick", attempt.timeToBall, attempt.ticksToBall);
 		});
 
-	gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode",
-		[this](std::string eventName) {
-			if (!*enabled || !loaded || !gameWrapper->IsInCustomTraining())
-				return;
+	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode",
+	//	[this](std::string eventName) {
+	//		if (!*enabled || !loaded || !gameWrapper->IsInCustomTraining())
+	//			return;
 
-			auto ball = gameWrapper->GetGameEventAsServer().GetBall();
-			auto car = gameWrapper->GetGameEventAsServer().GetLocalPrimaryPlayer();
+	//		auto ball = gameWrapper->GetGameEventAsServer().GetBall();
+	//		auto car = gameWrapper->GetGameEventAsServer().GetLocalPrimaryPlayer();
 
-			auto distanceToBall = distance(ball.GetLocation(), car.GetLocation());
-			auto meters = (distanceToBall / 100.0) - 4.8; // account for car distance
-			LOG("Distance to ball = {0:.1f}m", meters);
+	//		auto distanceToBall = distance(ball.GetLocation(), car.GetLocation());
+	//		auto meters = (distanceToBall / 100.0) - 4.8; // account for car distance
+	//		LOG("Distance to ball = {0:.1f}m", meters);
 
-			attempt.exploded = true;
-			attempt.hit = false;
-		});
+	//		attempt.exploded = true;
+	//		attempt.hit = false;
+	//	});
 
 	gameWrapper->HookEventPost("Function Engine.Controller.Restart",
 		[this](std::string eventName) {
